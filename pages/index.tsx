@@ -192,6 +192,15 @@ const Home = () => {
     getAccountAssets(address);
   };
 
+
+  const killSession = () => {
+    let connector = window['connector']
+    if (connector) {
+      connector.killSession();
+    }
+    onDisconnect();
+  }
+
   const onDisconnect = async () => {
     // setInitialState(initialStateValues);
     window['connector'] = null;
@@ -199,10 +208,6 @@ const Home = () => {
     setAddress("");
     setConnected(false);
     setAssets([]);
-    let connector = window['connector']
-    if (connector) {
-      connector.killSession();
-    }
   };
 
   // const seeConsole = () => {
@@ -223,16 +228,14 @@ const Home = () => {
         connected && address &&
         <div className={styles.connectionWrapper}>
           <h3>You are now connected to the wallet.</h3>
-          <button type="button" onClick={onDisconnect} className={styles.homeButton}>Disconnect Wallet</button>
+          <button type="button" onClick={killSession} className={styles.homeButton}>Disconnect Wallet</button>
           <p style={{ wordBreak: "break-all" }}>Wallet Address: {address}</p>
         </div>
       }
 
       {
         connected && assets.length > 0 &&
-        <>
-          <AccountAssets assets={assets} />
-        </>
+        <AccountAssets assets={assets} />
       }
     </div>
 
